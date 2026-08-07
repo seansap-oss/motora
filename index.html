@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Motora — Indian Vehicle Marketplace</title>
+    <script>
+      (function () {
+        var dir = new URL(".", document.baseURI).pathname.replace(/\/$/, "");
+        if (!dir) return;
+        function fix(value) {
+          if (typeof value !== "string") return value;
+          if (value.slice(0, 8) !== "/assets/") return value;
+          return dir + value;
+        }
+        var proto = HTMLImageElement.prototype;
+        var descriptor = Object.getOwnPropertyDescriptor(proto, "src");
+        if (descriptor && descriptor.set) {
+          Object.defineProperty(proto, "src", {
+            configurable: true,
+            enumerable: descriptor.enumerable,
+            get: function () {
+              return descriptor.get.call(this);
+            },
+            set: function (value) {
+              descriptor.set.call(this, fix(value));
+            },
+          });
+        }
+        var setAttribute = proto.setAttribute;
+        proto.setAttribute = function (name, value) {
+          return setAttribute.call(this, name, name === "src" ? fix(value) : value);
+        };
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

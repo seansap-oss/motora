@@ -1,0 +1,11 @@
+# Protected runtime files are integrity-checked by sha256 in mobile-runtime.lock.json.
+# Force LF everywhere so those hashes stay stable on every platform and in CI.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary

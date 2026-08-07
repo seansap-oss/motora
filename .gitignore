@@ -1,0 +1,10 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+
+# Local duplicate scaffold, not part of the deployed app
+motora-stage1/
+
+# Local dev logs
+.dev-server*.log
