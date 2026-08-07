@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Sheet, TextInput } from "./shell";
-import { DEMO_OTP, createUser, isValidPhone, mintToken, normalisePhone, verifyOtp } from "../data/auth";
+import { DEMO_ADMIN_PHONE, DEMO_OTP, createUser, isValidPhone, mintToken, normalisePhone, verifyOtp } from "../data/auth";
 import type { AuthUser, SellerType } from "../data/types";
 
 type Props = {
@@ -85,7 +85,10 @@ export default function AuthSheet({ open, onOpenChange, onAuthenticated, reason 
                 />
               </div>
             </label>
-            <p className="form-copy">We send a one-time code. Standard SMS rates apply.</p>
+            <p className="form-copy">
+              We send a one-time code. Standard SMS rates apply. Demo: use <b>{DEMO_ADMIN_PHONE}</b> to sign in as the
+              Motora owner.
+            </p>
             <button type="button" className="primary full" onClick={sendOtp} disabled={busy}>
               {busy ? "Sending code…" : "Send OTP"}
             </button>

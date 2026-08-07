@@ -40,6 +40,9 @@ export function isValidPhone(raw: string) {
   return digits.length === 10 && /^[6-9]/.test(digits);
 }
 
+/** Demo owner account: signing in with this number unlocks the super-admin panel. */
+export const DEMO_ADMIN_PHONE = "9999999999";
+
 export function createUser(opts: {
   name: string;
   phone: string;
@@ -59,7 +62,7 @@ export function createUser(opts: {
     sellerType: opts.sellerType ?? "Private seller",
     sellerId: id,
     packageId: opts.packageId ?? "free",
-    isAdmin: opts.isAdmin ?? false,
+    isAdmin: opts.isAdmin ?? phone === DEMO_ADMIN_PHONE,
     adsUsedThisPeriod: 0,
   };
 }
