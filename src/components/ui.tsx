@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { ChevronDownIcon, Cross1Icon } from "@radix-ui/react-icons";
 import type { Listing } from "../data/types";
 
 export function IconButton({ label, children, onClick }: { label: string; children: ReactNode; onClick?: () => void }) {
@@ -21,9 +21,18 @@ export function SectionHeader({ title, action, onAction }: { title: string; acti
   );
 }
 
-export function FilterChip({ label }: { label: string }) {
+export function FilterChip({ label, onClear }: { label: string; onClear?: () => void }) {
+  if (onClear) {
+    return (
+      <button type="button" className="filter-chip is-set" onClick={onClear} aria-label={`Remove ${label} filter`}>
+        {label}
+        <Cross1Icon />
+      </button>
+    );
+  }
+
   return (
-    <button className="filter-chip">
+    <button type="button" className="filter-chip">
       {label}
       <ChevronDownIcon />
     </button>

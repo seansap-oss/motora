@@ -2,7 +2,7 @@ import { useMemo, useRef, useState } from "react";
 import { ArrowLeftIcon, CheckIcon, PersonIcon } from "@radix-ui/react-icons";
 import { FaBicycle, FaCarSide, FaMotorcycle, FaTruck } from "react-icons/fa6";
 import { MdElectricScooter } from "react-icons/md";
-import { KeyboardInput, KeyboardTextarea, useKeyboard } from "../../mobile";
+import { TextInput, TextArea } from "../shell";
 import {
   categorySubcategories,
   conditionGrades,
@@ -62,14 +62,13 @@ export default function SellFlow({
   onPublish,
   onToast,
 }: SellFlowProps) {
-  const keyboard = useKeyboard();
+  
   const [showIssues, setShowIssues] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const issues = useMemo(() => stepIssues(step, draft), [step, draft]);
   const meta = sellSteps[step - 1];
 
   const goStep = (next: number) => {
-    keyboard.hide();
     setShowIssues(false);
     onStepChange(Math.min(totalSellSteps, Math.max(1, next)));
   };
@@ -81,7 +80,6 @@ export default function SellFlow({
       return;
     }
     if (step === totalSellSteps) {
-      keyboard.hide();
       onPublish();
       return;
     }
@@ -90,7 +88,6 @@ export default function SellFlow({
 
   const back = () => {
     if (step === 1) {
-      keyboard.hide();
       onExit();
       return;
     }
@@ -265,7 +262,7 @@ function StepVehicle({ draft, onDraftChange }: { draft: ListingDraft; onDraftCha
 
       <label className="form-label">
         Search make
-        <KeyboardInput value={makeQuery} onChange={(event) => setMakeQuery(event.target.value)} placeholder="e.g. Tata, Hero, Ather" />
+        <TextInput value={makeQuery} onChange={(event) => setMakeQuery(event.target.value)} placeholder="e.g. Tata, Hero, Ather" />
       </label>
 
       <div className="pill-grid">
@@ -372,7 +369,7 @@ function StepCondition({ draft, onDraftChange }: { draft: ListingDraft; onDraftC
       {!cycle && (
         <label className="form-label">
           Odometer reading (km)
-          <KeyboardInput
+          <TextInput
             inputMode="numeric"
             value={draft.odometer}
             onChange={(event) => onDraftChange({ odometer: event.target.value })}
@@ -418,7 +415,7 @@ function StepCondition({ draft, onDraftChange }: { draft: ListingDraft; onDraftC
           <p className="eyebrow">EV DETAILS</p>
           <label className="form-label">
             Real-world range (km)
-            <KeyboardInput
+            <TextInput
               inputMode="numeric"
               value={draft.ev.rangeKm}
               onChange={(event) => onDraftChange({ ev: { ...draft.ev, rangeKm: event.target.value } })}
@@ -427,7 +424,7 @@ function StepCondition({ draft, onDraftChange }: { draft: ListingDraft; onDraftC
           </label>
           <label className="form-label">
             Battery capacity (kWh)
-            <KeyboardInput
+            <TextInput
               value={draft.ev.batteryKwh}
               onChange={(event) => onDraftChange({ ev: { ...draft.ev, batteryKwh: event.target.value } })}
               placeholder="e.g. 3.7"
@@ -435,7 +432,7 @@ function StepCondition({ draft, onDraftChange }: { draft: ListingDraft; onDraftC
           </label>
           <label className="form-label">
             Full charge time (hours)
-            <KeyboardInput
+            <TextInput
               value={draft.ev.chargeTimeHours}
               onChange={(event) => onDraftChange({ ev: { ...draft.ev, chargeTimeHours: event.target.value } })}
               placeholder="e.g. 5.5"
@@ -443,7 +440,7 @@ function StepCondition({ draft, onDraftChange }: { draft: ListingDraft; onDraftC
           </label>
           <label className="form-label">
             Battery health (%)
-            <KeyboardInput
+            <TextInput
               inputMode="numeric"
               value={draft.ev.batteryHealth}
               onChange={(event) => onDraftChange({ ev: { ...draft.ev, batteryHealth: event.target.value } })}
@@ -458,7 +455,7 @@ function StepCondition({ draft, onDraftChange }: { draft: ListingDraft; onDraftC
           <p className="eyebrow">CYCLE DETAILS</p>
           <label className="form-label">
             Frame size
-            <KeyboardInput
+            <TextInput
               value={draft.cycle.frameSize}
               onChange={(event) => onDraftChange({ cycle: { ...draft.cycle, frameSize: event.target.value } })}
               placeholder="e.g. M / 18 inch"
@@ -466,7 +463,7 @@ function StepCondition({ draft, onDraftChange }: { draft: ListingDraft; onDraftC
           </label>
           <label className="form-label">
             Wheel size
-            <KeyboardInput
+            <TextInput
               value={draft.cycle.wheelSize}
               onChange={(event) => onDraftChange({ cycle: { ...draft.cycle, wheelSize: event.target.value } })}
               placeholder="e.g. 27.5 inch"
@@ -474,7 +471,7 @@ function StepCondition({ draft, onDraftChange }: { draft: ListingDraft; onDraftC
           </label>
           <label className="form-label">
             Gears
-            <KeyboardInput
+            <TextInput
               value={draft.cycle.gears}
               onChange={(event) => onDraftChange({ cycle: { ...draft.cycle, gears: event.target.value } })}
               placeholder="e.g. 21 speed"
@@ -482,7 +479,7 @@ function StepCondition({ draft, onDraftChange }: { draft: ListingDraft; onDraftC
           </label>
           <label className="form-label">
             Brake type
-            <KeyboardInput
+            <TextInput
               value={draft.cycle.brakeType}
               onChange={(event) => onDraftChange({ cycle: { ...draft.cycle, brakeType: event.target.value } })}
               placeholder="e.g. Disc"
@@ -616,7 +613,7 @@ function StepPricing({ draft, onDraftChange }: { draft: ListingDraft; onDraftCha
 
       <label className="form-label">
         Asking price (₹)
-        <KeyboardInput
+        <TextInput
           inputMode="numeric"
           value={draft.price}
           onChange={(event) => onDraftChange({ price: event.target.value })}
@@ -639,7 +636,7 @@ function StepPricing({ draft, onDraftChange }: { draft: ListingDraft; onDraftCha
 
       <label className="form-label">
         City / area
-        <KeyboardInput
+        <TextInput
           value={draft.location}
           onChange={(event) => onDraftChange({ location: event.target.value })}
           placeholder="e.g. Imphal"
@@ -660,7 +657,7 @@ function StepPricing({ draft, onDraftChange }: { draft: ListingDraft; onDraftCha
 
       <label className="form-label">
         PIN code
-        <KeyboardInput
+        <TextInput
           inputMode="numeric"
           value={draft.pincode}
           onChange={(event) => onDraftChange({ pincode: event.target.value })}
@@ -686,7 +683,7 @@ function StepPricing({ draft, onDraftChange }: { draft: ListingDraft; onDraftCha
 
           <label className="form-label">
             Registration number
-            <KeyboardInput
+            <TextInput
               value={draft.registrationNumber}
               onChange={(event) => onDraftChange({ registrationNumber: event.target.value.toUpperCase() })}
               placeholder="e.g. MN01 XX 1234"
@@ -695,7 +692,7 @@ function StepPricing({ draft, onDraftChange }: { draft: ListingDraft; onDraftCha
 
           <label className="form-label">
             Insurance valid till
-            <KeyboardInput
+            <TextInput
               value={draft.insuranceValidTill}
               onChange={(event) => onDraftChange({ insuranceValidTill: event.target.value })}
               placeholder="e.g. Mar 2027"
@@ -773,7 +770,7 @@ function StepPreview({
 
       <label className="form-label">
         Description
-        <KeyboardTextarea
+        <TextArea
           value={draft.description}
           onChange={(event) => onDraftChange({ description: event.target.value })}
           placeholder="Service history, registration, condition, known problems and why you are selling…"
@@ -788,6 +785,18 @@ function StepPreview({
         <span>
           <b>Share my contact details with buyers</b>
           <small>Phone, WhatsApp and in-app chat on this listing</small>
+        </span>
+        <i />
+      </button>
+
+      <button
+        type="button"
+        className={draft.hidePhone ? "toggle-row on" : "toggle-row"}
+        onClick={() => onDraftChange({ hidePhone: !draft.hidePhone })}
+      >
+        <span>
+          <b>Hide my phone number</b>
+          <small>Buyers reach you through in-app messages instead of a direct call</small>
         </span>
         <i />
       </button>

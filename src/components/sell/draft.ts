@@ -38,6 +38,7 @@ export function createDraft(sellerType: SellerType = "Dealer"): ListingDraft {
     description: "",
     sellerType,
     contactConsent: false,
+    hidePhone: false,
   };
 }
 

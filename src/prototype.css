@@ -1,3 +1,4 @@
+@import "./app-shell.css";
 :root { --m-bg:#fbfaf7; --m-card:#ffffff; --m-ink:#161717; --m-muted:#70716d; --m-line:#e9e5df; --m-accent:#d7552a; --m-accent-soft:#fff0e9; --m-good:#32986e; --m-safe: calc(var(--mobile-safe-area-height) + 84px); }
 .motora-app { position:relative; height:100%; color:var(--m-ink); background:var(--m-bg); font-family:Roboto, Inter, ui-sans-serif, system-ui, sans-serif; }
 .motora-app.dark { --m-bg:#11110f; --m-card:#1b1b18; --m-ink:#f8f2e8; --m-muted:#aaa49a; --m-line:#39372f; --m-accent:#d6ab56; --m-accent-soft:#282216; --m-good:#7fcba1; }

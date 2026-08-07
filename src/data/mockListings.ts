@@ -2,6 +2,7 @@ import suvImage from "../assets/motora-suv.png";
 import twoWheelersImage from "../assets/motora-two-wheelers.png";
 import ebikeImage from "../assets/motora-ebike.png";
 import type { Category, Listing, Seller } from "./types";
+import { extraListings } from "./mockListings-extra";
 
 export const categoryImages: Record<Category, string> = {
   Cars: suvImage,
@@ -83,6 +84,12 @@ export const listings: Listing[] = [
     ownership: "1st Owner",
     image: suvImage,
     sellerId: "amit-motors",
+    transmission: "Automatic",
+    displacement: 1956,
+    kmValue: 32450,
+    userId: "user_9876543210",
+    views: 412,
+    leads: 18,
     verified: true,
   },
   {
@@ -103,6 +110,12 @@ export const listings: Listing[] = [
     ownership: "1st Owner",
     image: twoWheelersImage,
     sellerId: "leima-rides",
+    transmission: "Manual",
+    displacement: 349,
+    kmValue: 8400,
+    userId: "user_9811122334",
+    views: 286,
+    leads: 11,
     verified: true,
   },
   {
@@ -123,6 +136,12 @@ export const listings: Listing[] = [
     ownership: "1st Owner",
     image: twoWheelersImage,
     sellerId: "leima-rides",
+    transmission: "Automatic",
+    displacement: 0,
+    kmValue: 2100,
+    userId: "user_9811122334",
+    views: 530,
+    leads: 24,
     verified: true,
   },
   {
@@ -143,6 +162,12 @@ export const listings: Listing[] = [
     ownership: "1st Owner",
     image: ebikeImage,
     sellerId: "north-east-classics",
+    transmission: "Single speed",
+    displacement: 0,
+    kmValue: 0,
+    userId: "user_9000011223",
+    views: 97,
+    leads: 3,
   },
   {
     id: "mahindra-scorpio-n-z8",
@@ -162,6 +187,12 @@ export const listings: Listing[] = [
     ownership: "2nd Owner",
     image: suvImage,
     sellerId: "amit-motors",
+    transmission: "Manual",
+    displacement: 2184,
+    kmValue: 41200,
+    userId: "user_9876543210",
+    views: 344,
+    leads: 9,
   },
   {
     id: "tata-ace-gold-cng",
@@ -181,8 +212,15 @@ export const listings: Listing[] = [
     ownership: "1st Owner",
     image: suvImage,
     sellerId: "amit-motors",
+    transmission: "Manual",
+    displacement: 694,
+    kmValue: 68900,
+    userId: "user_9876543210",
+    views: 158,
+    leads: 6,
     verified: true,
   },
+  ...extraListings,
 ];
 
 export const brands = ["MARUTI", "TATA", "MAHINDRA", "HYUNDAI", "HONDA", "TOYOTA", "KIA", "MG"];

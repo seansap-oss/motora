@@ -23,11 +23,18 @@ export type Listing = {
   year: string;
   fuel: string;
   fuelType: FuelType;
+  transmission?: Transmission;
+  displacement?: number;
+  kmValue?: number;
   km: string;
   location: string;
   ownership: OwnershipCount;
   image: string;
   sellerId: string;
+  userId?: string;
+  hidePhone?: boolean;
+  views?: number;
+  leads?: number;
   verified?: boolean;
 };
 
@@ -105,12 +112,14 @@ export type ListingDraft = {
   description: string;
   sellerType: SellerType;
   contactConsent: boolean;
+  hidePhone: boolean;
 };
 
 export type CatalogueModel = {
   model: string;
   variants: string[];
   years: number[];
+  displacement?: number;
 };
 
 export type CatalogueMake = {
@@ -118,3 +127,58 @@ export type CatalogueMake = {
   categories: Category[];
   models: Partial<Record<Category, CatalogueModel[]>>;
 };
+
+export type AuthUser = {
+  id: string;
+  name: string;
+  phone: string;
+  email: string;
+  initials: string;
+  sellerType: SellerType;
+  sellerId: string;
+  packageId: PackageId;
+  isAdmin: boolean;
+  adsUsedThisPeriod: number;
+};
+
+export type PackageId = "free" | "standard" | "comprehensive" | "dealer";
+
+export type PackagePlan = {
+  id: PackageId;
+  name: string;
+  price: number;
+  priceLabel: string;
+  period: string;
+  adLimit: number;
+  photoLimit: number;
+  videoEmbed: boolean;
+  featured: boolean;
+  highlights: string[];
+  split?: string;
+  custom?: boolean;
+};
+
+export type PaymentMethod = "upi" | "netbanking" | "card";
+
+export type UpiApp = "Google Pay" | "PhonePe" | "Paytm" | "BHIM UPI";
+
+export type SearchFilters = {
+  keyword: string;
+  category: Category | "All";
+  make: string;
+  model: string;
+  fuelTypes: FuelType[];
+  transmissions: Transmission[];
+  ownership: OwnershipCount[];
+  priceMin: number | null;
+  priceMax: number | null;
+  yearMin: number | null;
+  yearMax: number | null;
+  kmMax: number | null;
+  displacementMin: number | null;
+  displacementMax: number | null;
+  checkedOnly: boolean;
+  location: string;
+};
+
+export type SortKey = "relevance" | "price-asc" | "price-desc" | "year-desc" | "km-asc";

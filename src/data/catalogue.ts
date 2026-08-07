@@ -1,4 +1,5 @@
 import type { CatalogueMake, Category, ConditionGrade, FuelType, OwnershipCount, Transmission } from "./types";
+import { catalogueExtra } from "./catalogue-extra";
 
 export const categorySubcategories: Record<Category, string[]> = {
   Cars: ["Hatchback", "Sedan", "SUV", "MPV", "Coupe", "Convertible", "Pickup", "Electric car", "CNG / Hybrid", "Luxury"],
@@ -11,7 +12,7 @@ export const categorySubcategories: Record<Category, string[]> = {
 const carYears = [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015];
 const shortYears = [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018];
 
-export const catalogue: CatalogueMake[] = [
+const catalogueBase: CatalogueMake[] = [
   {
     make: "Maruti Suzuki",
     categories: ["Cars"],
@@ -255,12 +256,72 @@ export const catalogue: CatalogueMake[] = [
   },
 ];
 
+/** Merges the base and extended catalogues, de-duplicating makes and models. */
+function mergeCatalogue(sources: CatalogueMake[][]): CatalogueMake[] {
+  const byMake = new Map<string, CatalogueMake>();
+
+  for (const source of sources) {
+    for (const entry of source) {
+      const existing = byMake.get(entry.make);
+      if (!existing) {
+        byMake.set(entry.make, {
+          make: entry.make,
+          categories: [...entry.categories],
+          models: Object.fromEntries(
+            Object.entries(entry.models).map(([key, list]) => [key, list ? [...list] : []]),
+          ) as CatalogueMake["models"],
+        });
+        continue;
+      }
+
+      for (const category of entry.categories) {
+        if (!existing.categories.includes(category)) existing.categories.push(category);
+      }
+
+      for (const [key, list] of Object.entries(entry.models)) {
+        const category = key as Category;
+        const target = existing.models[category] ?? [];
+        for (const model of list ?? []) {
+          if (!target.some((item) => item.model === model.model)) target.push(model);
+        }
+        existing.models[category] = target;
+      }
+    }
+  }
+
+  return Array.from(byMake.values()).sort((a, b) => a.make.localeCompare(b.make));
+}
+
+export const catalogue: CatalogueMake[] = mergeCatalogue([catalogueBase, catalogueExtra]);
+
 export function makesForCategory(category: Category) {
   return catalogue.filter((entry) => entry.categories.includes(category)).map((entry) => entry.make);
 }
 
+export function allMakes() {
+  return catalogue.map((entry) => entry.make);
+}
+
+export function catalogueStats() {
+  let models = 0;
+  let variants = 0;
+  for (const make of catalogue) {
+    for (const list of Object.values(make.models)) {
+      for (const model of list ?? []) {
+        models += 1;
+        variants += model.variants.length;
+      }
+    }
+  }
+  return { makes: catalogue.length, models, variants };
+}
+
 export function modelsFor(category: Category, make: string) {
   return catalogue.find((entry) => entry.make === make)?.models[category] ?? [];
+}
+
+export function displacementFor(category: Category, make: string, model: string) {
+  return modelsFor(category, make).find((entry) => entry.model === model)?.displacement;
 }
 
 export function variantsFor(category: Category, make: string, model: string) {

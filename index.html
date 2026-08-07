@@ -1,41 +1,42 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Motora — Indian Vehicle Marketplace</title>
-    <script>
-      (function () {
-        var dir = new URL(".", document.baseURI).pathname.replace(/\/$/, "");
-        if (!dir) return;
-        function fix(value) {
-          if (typeof value !== "string") return value;
-          if (value.slice(0, 8) !== "/assets/") return value;
-          return dir + value;
-        }
-        var proto = HTMLImageElement.prototype;
-        var descriptor = Object.getOwnPropertyDescriptor(proto, "src");
-        if (descriptor && descriptor.set) {
-          Object.defineProperty(proto, "src", {
-            configurable: true,
-            enumerable: descriptor.enumerable,
-            get: function () {
-              return descriptor.get.call(this);
-            },
-            set: function (value) {
-              descriptor.set.call(this, fix(value));
-            },
-          });
-        }
-        var setAttribute = proto.setAttribute;
-        proto.setAttribute = function (name, value) {
-          return setAttribute.call(this, name, name === "src" ? fix(value) : value);
-        };
-      })();
-    </script>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0"
+    />
+    <title>Motora — Buy & Sell Vehicles in India</title>
+    <meta
+      name="description"
+      content="Motora is an Indian marketplace for cars, motorcycles, scooters, commercial vehicles, and cycles. Verified dealers, private sellers, and collectors."
+    />
+
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#d7552a" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#11110f" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Motora" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="icon" href="/icons/icon-192.png" type="image/png" />
+
+    <meta property="og:title" content="Motora — Buy & Sell Vehicles in India" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/icons/icon-512.png" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ("serviceWorker" in navigator && location.protocol === "https:") {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("/sw.js").catch(function () {});
+        });
+      }
+    </script>
   </body>
 </html>
