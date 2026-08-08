@@ -7,7 +7,7 @@
       "namespace": "android_app",
       "package_name": "in.motora.app",
       "sha256_cert_fingerprints": [
-        "REPLACE_WITH_SHA256_FROM_YOUR_UPLOAD_KEYSTORE",
+        "4B:E1:A2:C9:12:55:F9:7C:D0:6E:51:1A:29:A9:8B:18:72:81:03:8C:21:09:5C:8A:A7:BA:DA:0C:EC:33:39:F4",
         "REPLACE_WITH_SHA256_FROM_PLAY_APP_SIGNING"
       ]
     }
