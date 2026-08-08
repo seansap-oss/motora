@@ -63,5 +63,11 @@ export function isPopular(counts: EngagementCounts, id: string) {
 
 export function urgencyLabel(counts: EngagementCounts, id: string) {
   const today = counts[id]?.viewedToday ?? 0;
-  return `🔥 Popular Ad! ${today} buyers viewed this today.`;
+  return `🔥 Popular Ad! ${today} buyers viewed this today — contact seller before it's gone.`;
+}
+
+/** Short form for compact surfaces such as result rows. */
+export function urgencyShort(counts: EngagementCounts, id: string) {
+  const today = counts[id]?.viewedToday ?? 0;
+  return `🔥 ${today} buyers viewed today`;
 }

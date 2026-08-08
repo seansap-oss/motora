@@ -1,0 +1,249 @@
+/* Unified hero canvas: single warm cream field, centred vehicle, hybrid split text. */
+
+.hero-shell {
+  position: relative;
+  margin-top: var(--space-4);
+  overflow: hidden;
+  border: 1px solid var(--m-line);
+  border-radius: 26px;
+  background: #f6f4ef;
+}
+
+.dark .hero-shell {
+  border-color: #39372f;
+  background: #201d16;
+}
+
+.hero-track {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.hero-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* During the intro the carousel drives itself; block user scroll interference. */
+.hero-track.is-spinning {
+  scroll-snap-type: none;
+  pointer-events: none;
+}
+
+.hero-slide {
+  display: grid;
+  width: 100%;
+  min-width: 100%;
+  align-content: space-between;
+  justify-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-4) var(--space-4);
+  background: #f6f4ef;
+  scroll-snap-align: center;
+  text-align: center;
+}
+
+.dark .hero-slide {
+  background: #201d16;
+}
+
+/* TOP: tag + headline above the vehicle */
+.hero-top {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: center;
+}
+
+.hero-top .eyebrow {
+  margin: 0;
+  color: var(--m-accent);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.hero-top h1 {
+  margin: 0;
+  color: #161717;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -1.3px;
+  line-height: 1.05;
+}
+
+.dark .hero-top h1 {
+  color: #f8f2e8;
+}
+
+/* MIDDLE: centred vehicle, contained so it never covers the copy */
+.hero-stage {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 150px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* height:100% resolves against the definite stage box, so the vehicle is
+   always contained and can never overlap the copy above or below it. */
+.hero-stage img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  user-select: none;
+}
+
+.dark .hero-stage img {
+  mix-blend-mode: normal;
+  opacity: 0.92;
+}
+
+.hero-tag {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  gap: 1px;
+  max-width: 45%;
+  padding: var(--space-1) var(--space-2);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.9);
+  text-align: right;
+}
+
+.dark .hero-tag {
+  background: rgba(32, 29, 22, 0.9);
+}
+
+.hero-tag b {
+  overflow: hidden;
+  color: #161717;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dark .hero-tag b {
+  color: #f8f2e8;
+}
+
+.hero-tag small {
+  color: var(--m-accent);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+/* BOTTOM: subheadline + action below the vehicle */
+.hero-bottom {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr;
+  grid-auto-flow: row;
+  gap: var(--space-3);
+  justify-items: center;
+}
+
+.hero-bottom .hero-cta {
+  justify-self: center;
+}
+
+.hero-sub {
+  margin: 0;
+  color: #70716d;
+  font-size: 13px;
+}
+
+.dark .hero-sub {
+  color: #aaa49a;
+}
+
+.hero-cta {
+  min-height: 42px;
+  padding: 0 var(--space-5);
+  border-radius: 11px;
+  background: var(--m-accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.hero-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 0 var(--space-3);
+  background: #f6f4ef;
+}
+
+.dark .hero-dots {
+  background: #201d16;
+}
+
+.hero-dots button {
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border-radius: 999px;
+  background: #d6d1c6;
+  transition: width 0.2s ease, background 0.2s ease;
+}
+
+.dark .hero-dots button {
+  background: #4a4639;
+}
+
+.hero-dots button.active {
+  width: 18px;
+  background: var(--m-accent);
+}
+
+@media (min-width: 740px) {
+  .hero-slide {
+    padding: var(--space-6) var(--space-6) var(--space-5);
+    gap: var(--space-4);
+  }
+
+  .hero-top h1 {
+    font-size: 44px;
+    letter-spacing: -2px;
+  }
+
+  .hero-stage {
+    height: 240px;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+  }
+
+  .hero-cta {
+    min-height: 46px;
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .hero-stage {
+    height: 300px;
+  }
+
+  .hero-top h1 {
+    font-size: 52px;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-top h1 {
+    font-size: 26px;
+  }
+
+  .hero-stage {
+    height: 128px;
+  }
+}

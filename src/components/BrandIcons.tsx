@@ -1,6 +1,7 @@
 import React from 'react';
+import { BRAND_SVGS_EXTRA } from './BrandIconsExtra';
 
-export const BRAND_SVGS: Record<string, React.ReactNode> = {
+const BRAND_SVGS_CORE: Record<string, React.ReactNode> = {
   maruti: (
     <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
       <path d="M12 2L2 8.5v7L12 22l10-6.5v-7L12 2zm0 3.2l6.8 4.4-6.8 4.4-6.8-4.4L12 5.2zM4 10.2l6.8 4.4v6.8L4 14.6v-4.4zm16 4.4l-6.8 6.8v-6.8l6.8-4.4v4.4z"/>
@@ -59,8 +60,22 @@ export const BRAND_SVGS: Record<string, React.ReactNode> = {
   )
 };
 
+/** Core marks plus the extended India-market set (50+ brands). */
+export const BRAND_SVGS: Record<string, React.ReactNode> = {
+  ...BRAND_SVGS_EXTRA,
+  ...BRAND_SVGS_CORE,
+};
+
+export function brandKey(name: string) {
+  return name.toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+export function hasBrandIcon(name: string) {
+  return brandKey(name) in BRAND_SVGS;
+}
+
 export const BrandIcon = ({ name, size = 32 }: { name: string; size?: number }) => {
-  const key = name.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const key = brandKey(name);
   const svg = BRAND_SVGS[key] || BRAND_SVGS.default;
   return <div style={{ width: size, height: size, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>{svg}</div>;
 };

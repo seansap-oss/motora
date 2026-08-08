@@ -1,5 +1,57 @@
 /* Brand vectors, dealers directory, saved ads, and engagement badges. */
 
+/* Brand rail (scrollable, 45+ marks) ---------------------------------------- */
+.brand-rail {
+  width: calc(100% + var(--space-4));
+}
+
+.brand-rail-track {
+  gap: var(--space-2);
+  padding-right: var(--space-4);
+}
+
+.brand-chip {
+  display: flex;
+  width: 86px;
+  min-width: 86px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-1);
+  border: 1px solid var(--m-line);
+  border-radius: 14px;
+  background: var(--m-card);
+  transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+}
+
+.brand-chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--m-accent);
+  background: var(--m-accent-soft);
+}
+
+.brand-chip > div {
+  color: var(--m-accent);
+}
+
+.brand-chip > div svg {
+  width: 32px;
+  height: 32px;
+}
+
+.brand-chip strong {
+  overflow: hidden;
+  width: 100%;
+  color: var(--m-ink);
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* Brand grid with SVG vectors ---------------------------------------------- */
 .brand-grid button {
   display: flex;

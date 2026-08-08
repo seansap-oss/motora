@@ -35,12 +35,13 @@ import Packages from "./components/Packages";
 import ShareSheet, { type ShareTarget } from "./components/ShareSheet";
 import { EmiCalculator, OnRoadPrice, ValuationModal } from "./components/FinanceTools";
 import AdminPanel from "./components/AdminPanel";
-import { brands, getSeller, listings, listingsBySeller, sellers } from "./data/mockListings";
+import { brandRail, getSeller, listings, listingsBySeller, sellers } from "./data/mockListings";
 import { catalogueStats } from "./data/catalogue";
 import { applyFilters, countActiveFilters, emptyFilters, sortListings, sortOptions } from "./data/search";
 import { loadSession, saveSession, type Session } from "./data/auth";
 import { getPackage } from "./data/packages";
 import { BrandIcon } from "./components/BrandIcons";
+import HeroCarousel, { HERO_SLOTS } from "./components/HeroCarousel";
 import {
   isPopular,
   loadCounts,
@@ -49,6 +50,7 @@ import {
   persistSaved,
   seedCounts,
   urgencyLabel,
+  urgencyShort,
   type EngagementCounts,
 } from "./data/engagement";
 import type {
@@ -244,6 +246,13 @@ export default function Prototype() {
     return pages;
   }, []);
 
+  /** Ten hero slots: the primary Home feature first, then other premium stock. */
+  const heroSlides = useMemo(() => {
+    const featured = listings.filter((item) => item.verified);
+    const rest = listings.filter((item) => !item.verified);
+    return [...featured, ...rest].slice(0, HERO_SLOTS);
+  }, []);
+
   const savedListings = useMemo(
     () => savedIds.map((id) => listings.find((item) => item.id === id)).filter((item): item is Listing => Boolean(item)),
     [savedIds],
@@ -331,21 +340,7 @@ export default function Prototype() {
               </IconButton>
             </header>
 
-            <section className="hero-panel">
-              <div>
-                <p className="eyebrow">MOTORA INDIA · V1.0</p>
-                <h1>
-                  Find your
-                  <br />
-                  perfect ride
-                </h1>
-                <p>Cars, bikes & more. All in one place.</p>
-              </div>
-              <img src={suvImage} alt="Premium featured SUV" />
-              <button className="hero-cta" onClick={() => openListing(listings[0])}>
-                View details
-              </button>
-            </section>
+            <HeroCarousel slides={heroSlides} onOpen={openListing} />
 
             <label className="search-field">
               <MagnifyingGlassIcon />
@@ -411,21 +406,22 @@ export default function Prototype() {
             </Rail>
 
             <SectionHeader title="Browse by brand" action="See all" onAction={() => go("results")} />
-            <div className="brand-grid">
-              {brands.map((brand) => (
+            <Rail ariaLabel="Browse vehicles by brand" className="brand-rail" contentClassName="brand-rail-track">
+              {brandRail.map((brand) => (
                 <button
                   type="button"
-                  key={brand}
+                  className="brand-chip"
+                  key={brand.label}
                   onClick={() => {
-                    updateFilters({ ...emptyFilters, keyword: brand });
+                    updateFilters({ ...emptyFilters, category: brand.category, make: brand.label });
                     go("results");
                   }}
                 >
-                  <BrandIcon name={brand} size={30} />
-                  <strong>{brand}</strong>
+                  <BrandIcon name={brand.icon} size={32} />
+                  <strong>{brand.label}</strong>
                 </button>
               ))}
-            </div>
+            </Rail>
 
             <section className="premium-callout">
               <p className="eyebrow">MOTORA CHECKED</p>
@@ -567,7 +563,7 @@ export default function Prototype() {
                       </p>
                       <strong>{item.price}</strong>
                       {item.verified && <span className="verified-mini">✓ Motora Checked</span>}
-                      {isPopular(counts, item.id) && <span className="urgency-badge">{urgencyLabel(counts, item.id)}</span>}
+                      {isPopular(counts, item.id) && <span className="urgency-badge">{urgencyShort(counts, item.id)}</span>}
                     </div>
                     <button
                       type="button"

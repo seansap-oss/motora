@@ -225,6 +225,57 @@ export const listings: Listing[] = [
 
 export const brands = ["MARUTI", "TATA", "MAHINDRA", "HYUNDAI", "HONDA", "TOYOTA", "KIA", "MG"];
 
+/** Brand rail: spans cars, two-wheelers, EV, commercial and cycles. */
+export const brandRail: { label: string; icon: string; category: Category }[] = [
+  { label: "Maruti Suzuki", icon: "marutisuzuki", category: "Cars" },
+  { label: "Tata", icon: "tata", category: "Cars" },
+  { label: "Mahindra", icon: "mahindra", category: "Cars" },
+  { label: "Hyundai", icon: "hyundai", category: "Cars" },
+  { label: "Toyota", icon: "toyota", category: "Cars" },
+  { label: "Kia", icon: "kia", category: "Cars" },
+  { label: "Honda", icon: "honda", category: "Cars" },
+  { label: "MG", icon: "mg", category: "Cars" },
+  { label: "Volkswagen", icon: "volkswagen", category: "Cars" },
+  { label: "Skoda", icon: "skoda", category: "Cars" },
+  { label: "Renault", icon: "renault", category: "Cars" },
+  { label: "Nissan", icon: "nissan", category: "Cars" },
+  { label: "Jeep", icon: "jeep", category: "Cars" },
+  { label: "Citroen", icon: "citroen", category: "Cars" },
+  { label: "BMW", icon: "bmw", category: "Cars" },
+  { label: "Mercedes-Benz", icon: "mercedesbenz", category: "Cars" },
+  { label: "Audi", icon: "audi", category: "Cars" },
+  { label: "Royal Enfield", icon: "royalenfield", category: "Bikes" },
+  { label: "Hero", icon: "hero", category: "Bikes" },
+  { label: "Bajaj", icon: "bajaj", category: "Bikes" },
+  { label: "TVS", icon: "tvs", category: "Bikes" },
+  { label: "Yamaha", icon: "yamaha", category: "Bikes" },
+  { label: "Suzuki", icon: "suzuki", category: "Bikes" },
+  { label: "KTM", icon: "ktm", category: "Bikes" },
+  { label: "Jawa Yezdi", icon: "jawayezdi", category: "Bikes" },
+  { label: "Ather", icon: "ather", category: "Scooters" },
+  { label: "Ola Electric", icon: "olaelectric", category: "Scooters" },
+  { label: "Vida", icon: "vida", category: "Scooters" },
+  { label: "Ampere", icon: "ampere", category: "Scooters" },
+  { label: "Okinawa", icon: "okinawa", category: "Scooters" },
+  { label: "Piaggio", icon: "piaggio", category: "Scooters" },
+  { label: "Ashok Leyland", icon: "ashokleyland", category: "Commercial" },
+  { label: "Eicher", icon: "eicher", category: "Commercial" },
+  { label: "Force Motors", icon: "forcemotors", category: "Commercial" },
+  { label: "Sonalika", icon: "sonalika", category: "Commercial" },
+  { label: "Swaraj", icon: "swaraj", category: "Commercial" },
+  { label: "John Deere", icon: "johndeere", category: "Commercial" },
+  { label: "Firefox", icon: "firefox", category: "Bicycles & Kids" },
+  { label: "Trek", icon: "trek", category: "Bicycles & Kids" },
+  { label: "Hero Lectro", icon: "herolectro", category: "Bicycles & Kids" },
+  { label: "Btwin", icon: "btwin", category: "Bicycles & Kids" },
+  { label: "Hercules", icon: "hercules", category: "Bicycles & Kids" },
+  { label: "Avon Cycles", icon: "avoncycles", category: "Bicycles & Kids" },
+  { label: "Atlas", icon: "atlas", category: "Bicycles & Kids" },
+  { label: "Ninety One", icon: "ninetyone", category: "Bicycles & Kids" },
+  { label: "EMotorad", icon: "emotorad", category: "Bicycles & Kids" },
+  { label: "Motovolt", icon: "motovolt", category: "Bicycles & Kids" },
+];
+
 export function getSeller(id: string) {
   return sellers.find((seller) => seller.id === id) ?? sellers[0];
 }
