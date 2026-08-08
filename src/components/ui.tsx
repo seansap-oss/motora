@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { ChevronDownIcon, Cross1Icon } from "@radix-ui/react-icons";
+import { ChevronDownIcon, Cross1Icon, HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 import type { Listing } from "../data/types";
 
 export function IconButton({ label, children, onClick }: { label: string; children: ReactNode; onClick?: () => void }) {
@@ -48,18 +48,55 @@ export function Spec({ label, value }: { label: string; value: string }) {
   );
 }
 
-export function ListingCard({ item, compact = false, onOpen }: { item: Listing; compact?: boolean; onOpen: () => void }) {
+export function ListingCard({
+  item,
+  compact = false,
+  onOpen,
+  saved = false,
+  onToggleSave,
+  popular = false,
+}: {
+  item: Listing;
+  compact?: boolean;
+  onOpen: () => void;
+  saved?: boolean;
+  onToggleSave?: () => void;
+  popular?: boolean;
+}) {
   return (
-    <button type="button" className={compact ? "listing-card compact" : "listing-card"} onClick={onOpen}>
-      <span className="listing-image-wrap">
-        <img src={item.image} alt="" className={item.kind === "Bicycles & Kids" ? "product-image contain" : "product-image"} />
-      </span>
-      <span className="listing-name">{item.name}</span>
-      <span className="listing-meta">
-        {item.year} · {item.fuel}
-      </span>
-      <strong>{item.price}</strong>
-      {item.verified && <span className="verified-mini">✓ Checked</span>}
-    </button>
+    <div className={compact ? "listing-card compact" : "listing-card"}>
+      <button type="button" className="listing-open" onClick={onOpen}>
+        <span className="listing-image-wrap">
+          <img
+            src={item.image}
+            alt=""
+            className={item.kind === "Bicycles & Kids" ? "product-image contain" : "product-image"}
+          />
+        </span>
+        <span className="listing-name">{item.name}</span>
+        <span className="listing-meta">
+          {item.year} · {item.fuel}
+        </span>
+        <strong>{item.price}</strong>
+        {item.verified && <span className="verified-mini">✓ Checked</span>}
+      </button>
+
+      {onToggleSave && (
+        <button
+          type="button"
+          className={saved ? "listing-save is-saved" : "listing-save"}
+          onClick={(event) => {
+            event.stopPropagation();
+            onToggleSave();
+          }}
+          aria-pressed={saved}
+          aria-label={saved ? `Remove ${item.name} from Saved Ads` : `Save ${item.name} to Saved Ads`}
+        >
+          {saved ? <HeartFilledIcon /> : <HeartIcon />}
+        </button>
+      )}
+
+      {popular && <span className="popular-badge">🔥 Popular</span>}
+    </div>
   );
 }

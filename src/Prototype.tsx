@@ -5,6 +5,7 @@ import {
   Cross1Icon,
   EnvelopeClosedIcon,
   ExitIcon,
+  HeartFilledIcon,
   HeartIcon,
   HomeIcon,
   MagnifyingGlassIcon,
@@ -39,6 +40,17 @@ import { catalogueStats } from "./data/catalogue";
 import { applyFilters, countActiveFilters, emptyFilters, sortListings, sortOptions } from "./data/search";
 import { loadSession, saveSession, type Session } from "./data/auth";
 import { getPackage } from "./data/packages";
+import { BrandIcon } from "./components/BrandIcons";
+import {
+  isPopular,
+  loadCounts,
+  loadSaved,
+  persistCounts,
+  persistSaved,
+  seedCounts,
+  urgencyLabel,
+  type EngagementCounts,
+} from "./data/engagement";
 import type {
   AuthUser,
   Category,
@@ -54,7 +66,7 @@ import SellFlow from "./components/sell/SellFlow";
 import { createDraft, draftTitle, formatPrice } from "./components/sell/draft";
 import suvImage from "./assets/motora-suv.png";
 
-type View = "home" | "results" | "detail" | "dealer" | "sell" | "seller" | "admin" | "packages";
+type View = "home" | "results" | "detail" | "dealer" | "dealers" | "sell" | "seller" | "admin" | "packages" | "saved";
 
 /** Reads /store/:dealerId so dealer micro-sites are shareable, deep-linkable URLs. */
 function readRoute(): { view: View; sellerId?: string } {
@@ -101,6 +113,9 @@ export default function Prototype() {
   const [shareOpen, setShareOpen] = useState(false);
   const [valuationOpen, setValuationOpen] = useState(false);
   const [planId, setPlanId] = useState<PackageId>("free");
+  const [savedIds, setSavedIds] = useState<string[]>(() => loadSaved());
+  const [counts, setCounts] = useState<EngagementCounts>(() => seedCounts(listings, loadCounts()));
+  const [feedSize, setFeedSize] = useState(6);
 
   const updateDraft = (patch: Partial<ListingDraft>) => setDraft((current) => ({ ...current, ...patch }));
   const updateFilters = (patch: Partial<SearchFilters>) => setFilters((current) => ({ ...current, ...patch }));
@@ -178,10 +193,61 @@ export default function Prototype() {
     go("results");
   };
 
+  /** Opening a listing increments its view counters (session-persisted). */
   const openListing = (item: Listing) => {
     setActiveListing(item);
+    setCounts((current) => {
+      const entry = current[item.id] ?? { views: item.views ?? 0, saves: 0, viewedToday: 0 };
+      const next = {
+        ...current,
+        [item.id]: { ...entry, views: entry.views + 1, viewedToday: entry.viewedToday + 1 },
+      };
+      persistCounts(next);
+      return next;
+    });
     go("detail");
   };
+
+  const isSaved = (id: string) => savedIds.includes(id);
+
+  const toggleSave = (item: Listing) => {
+    const already = isSaved(item.id);
+    const nextIds = already ? savedIds.filter((id) => id !== item.id) : [...savedIds, item.id];
+    setSavedIds(nextIds);
+    persistSaved(nextIds);
+
+    setCounts((current) => {
+      const entry = current[item.id] ?? { views: item.views ?? 0, saves: 0, viewedToday: 0 };
+      const next = {
+        ...current,
+        [item.id]: { ...entry, saves: Math.max(0, entry.saves + (already ? -1 : 1)) },
+      };
+      persistCounts(next);
+      return next;
+    });
+
+    setToast(already ? `${item.name} removed from Saved Ads` : `${item.name} saved to your Saved Ads`);
+  };
+
+  /**
+   * Premium feed: verified/priority sellers first, then the rest. Cycled so the
+   * rail keeps producing pages until the fixture pool is exhausted.
+   */
+  const premiumFeed = useMemo(() => {
+    const priority = listings.filter((item) => item.verified);
+    const rest = listings.filter((item) => !item.verified);
+    const ordered = [...priority, ...rest];
+    const pages: Listing[] = [];
+    for (let cycle = 0; cycle < 3; cycle += 1) {
+      for (const item of ordered) pages.push(cycle === 0 ? item : { ...item, id: `${item.id}__p${cycle}` });
+    }
+    return pages;
+  }, []);
+
+  const savedListings = useMemo(
+    () => savedIds.map((id) => listings.find((item) => item.id === id)).filter((item): item is Listing => Boolean(item)),
+    [savedIds],
+  );
 
   /** Dealer micro-site: pushes a real /store/:dealerId URL so the link is shareable. */
   const openStore = (sellerId: string) => {
@@ -256,6 +322,10 @@ export default function Prototype() {
               <button className="location">
                 Imphal <ChevronDownIcon />
               </button>
+              <button className="dealers-nav" onClick={() => go("dealers")}>
+                <HomeIcon />
+                <span>Dealers &amp; Showrooms</span>
+              </button>
               <IconButton label="Switch theme" onClick={() => setDark(!dark)}>
                 {dark ? <SunIcon /> : <MoonIcon />}
               </IconButton>
@@ -296,7 +366,7 @@ export default function Prototype() {
               {categories.map(({ name, Icon }) => (
                 <button type="button" className="category-tile" key={name} onClick={() => openCategory(name)}>
                   <span>
-                    <Icon />
+                    <Icon size={30} strokeWidth={2.2} aria-hidden="true" />
                   </span>
                   <small>{name === "Bicycles & Kids" ? "Bikes & Kids" : name}</small>
                 </button>
@@ -317,16 +387,27 @@ export default function Prototype() {
               <span>›</span>
             </button>
 
-            <SectionHeader title="Popular near you" action="See all" onAction={() => go("results")} />
-            <Rail ariaLabel="Popular vehicle listings" className="listing-rail" contentClassName="listing-rail-track">
+            <SectionHeader title="Premium Ads" action="See all" onAction={() => go("results")} />
+            <Rail
+              ariaLabel="Premium vehicle listings"
+              className="listing-rail"
+              contentClassName="listing-rail-track"
+              onEndReached={() => setFeedSize((size) => Math.min(size + 6, premiumFeed.length))}
+            >
               {homeLoading
                 ? [0, 1, 2].map((key) => <ListingCardSkeleton compact key={key} />)
-                : listings
-                    .filter((item) => item.verified)
-                    .slice(0, 6)
-                    .map((item) => (
-                      <ListingCard compact item={item} onOpen={() => openListing(item)} key={item.id} />
-                    ))}
+                : premiumFeed.slice(0, feedSize).map((item) => (
+                    <ListingCard
+                      compact
+                      item={item}
+                      onOpen={() => openListing(item)}
+                      key={item.id}
+                      saved={isSaved(item.id)}
+                      onToggleSave={() => toggleSave(item)}
+                      popular={isPopular(counts, item.id)}
+                    />
+                  ))}
+              {!homeLoading && feedSize < premiumFeed.length && <ListingCardSkeleton compact />}
             </Rail>
 
             <SectionHeader title="Browse by brand" action="See all" onAction={() => go("results")} />
@@ -340,8 +421,8 @@ export default function Prototype() {
                     go("results");
                   }}
                 >
+                  <BrandIcon name={brand} size={30} />
                   <strong>{brand}</strong>
-                  <small>Browse</small>
                 </button>
               ))}
             </div>
@@ -399,7 +480,7 @@ export default function Prototype() {
                 <h1>Search results</h1>
                 <p>{resultsLoading ? "Searching…" : `${results.length} of ${listings.length} vehicles`}</p>
               </div>
-              <IconButton label="Saved vehicles" onClick={() => setToast("Shortlist syncs with your account soon.")}>
+              <IconButton label="Saved Ads" onClick={() => go("saved")}>
                 <HeartIcon />
               </IconButton>
             </header>
@@ -486,10 +567,17 @@ export default function Prototype() {
                       </p>
                       <strong>{item.price}</strong>
                       {item.verified && <span className="verified-mini">✓ Motora Checked</span>}
+                      {isPopular(counts, item.id) && <span className="urgency-badge">{urgencyLabel(counts, item.id)}</span>}
                     </div>
-                    <IconButton label="Save vehicle" onClick={() => setToast(`${item.name} saved to shortlist`)}>
-                      <HeartIcon />
-                    </IconButton>
+                    <button
+                      type="button"
+                      className={isSaved(item.id) ? "icon-button is-saved" : "icon-button"}
+                      onClick={() => toggleSave(item)}
+                      aria-pressed={isSaved(item.id)}
+                      aria-label={isSaved(item.id) ? `Remove ${item.name} from Saved Ads` : `Save ${item.name}`}
+                    >
+                      {isSaved(item.id) ? <HeartFilledIcon /> : <HeartIcon />}
+                    </button>
                   </article>
                 ))
               ) : (
@@ -513,9 +601,15 @@ export default function Prototype() {
               </IconButton>
               <div />
               <div className="header-actions">
-                <IconButton label="Save vehicle" onClick={() => setToast("Saved to shortlist")}>
-                  <HeartIcon />
-                </IconButton>
+                <button
+                  type="button"
+                  className={isSaved(activeListing.id) ? "icon-button is-saved" : "icon-button"}
+                  onClick={() => toggleSave(activeListing)}
+                  aria-pressed={isSaved(activeListing.id)}
+                  aria-label={isSaved(activeListing.id) ? "Remove from Saved Ads" : "Save to Saved Ads"}
+                >
+                  {isSaved(activeListing.id) ? <HeartFilledIcon /> : <HeartIcon />}
+                </button>
                 <IconButton label="Share vehicle" onClick={() => shareListing(activeListing)}>
                   <Share1Icon />
                 </IconButton>
@@ -544,6 +638,27 @@ export default function Prototype() {
                 {activeListing.price} <span>ⓘ</span>
               </p>
               <p className="subtle">Ex-showroom price · Finance options available</p>
+
+              {isPopular(counts, activeListing.id) && (
+                <p className="urgency-banner" role="status">
+                  {urgencyLabel(counts, activeListing.id)}
+                </p>
+              )}
+
+              <div className="engagement-row">
+                <span>
+                  <b>{(counts[activeListing.id]?.views ?? 0).toLocaleString("en-IN")}</b>
+                  <small>Views</small>
+                </span>
+                <span>
+                  <b>{counts[activeListing.id]?.saves ?? 0}</b>
+                  <small>Saves</small>
+                </span>
+                <span>
+                  <b>{counts[activeListing.id]?.viewedToday ?? 0}</b>
+                  <small>Viewed today</small>
+                </span>
+              </div>
 
               <div className="spec-grid">
                 <Spec label="Year" value={activeListing.year} />
@@ -680,6 +795,111 @@ export default function Prototype() {
           </main>
         )}
 
+        {view === "dealers" && (
+          <main className="motora-page dealers-page">
+            <header className="screen-topbar">
+              <IconButton label="Back to home" onClick={back}>
+                <ArrowLeftIcon />
+              </IconButton>
+              <div>
+                <h1>Dealers &amp; Showrooms</h1>
+                <p>{sellers.length} verified stores near you</p>
+              </div>
+              <div />
+            </header>
+
+            <section className="dealer-list">
+              {sellers.map((seller) => {
+                const stock = listingsBySeller(seller.id);
+                return (
+                  <article className="dealer-card" key={seller.id}>
+                    <button type="button" className="dealer-card-main" onClick={() => openStore(seller.id)}>
+                      <span className="dealer-avatar">{seller.initials}</span>
+                      <span className="dealer-card-body">
+                        <b>
+                          {seller.name} {seller.verified && <i className="verified-dot">✓</i>}
+                        </b>
+                        <small>
+                          {seller.type} · {seller.location}
+                        </small>
+                        <small className="dealer-card-stats">
+                          {seller.stats.rating} ★ · {stock.length} in stock · {seller.stats.responseRate}% response
+                        </small>
+                      </span>
+                    </button>
+                    <div className="dealer-card-actions">
+                      <button type="button" onClick={() => openStore(seller.id)}>
+                        Visit store
+                      </button>
+                      <button type="button" onClick={() => shareStore(seller.id)} aria-label={`Share ${seller.name}`}>
+                        <Share1Icon />
+                      </button>
+                    </div>
+                  </article>
+                );
+              })}
+            </section>
+          </main>
+        )}
+
+        {view === "saved" && (
+          <main className="motora-page saved-page">
+            <header className="screen-topbar">
+              <IconButton label="Back" onClick={back}>
+                <ArrowLeftIcon />
+              </IconButton>
+              <div>
+                <h1>Saved Ads</h1>
+                <p>{savedListings.length} saved</p>
+              </div>
+              <div />
+            </header>
+
+            {savedListings.length ? (
+              <section className="results-list">
+                {savedListings.map((item) => (
+                  <article className="result-row" key={item.id}>
+                    <button type="button" className="result-image" onClick={() => openListing(item)}>
+                      <img src={item.image} alt="" />
+                    </button>
+                    <div>
+                      <button type="button" className="result-title" onClick={() => openListing(item)}>
+                        {item.name}
+                      </button>
+                      <p>
+                        {item.year} · {item.fuel}
+                      </p>
+                      <p>
+                        {item.km} · {item.location}
+                      </p>
+                      <strong>{item.price}</strong>
+                      <small className="saved-stats">
+                        {(counts[item.id]?.views ?? 0).toLocaleString("en-IN")} views · {counts[item.id]?.saves ?? 0} saves
+                      </small>
+                    </div>
+                    <button
+                      type="button"
+                      className="icon-button is-saved"
+                      onClick={() => toggleSave(item)}
+                      aria-label={`Remove ${item.name} from Saved Ads`}
+                    >
+                      <HeartFilledIcon />
+                    </button>
+                  </article>
+                ))}
+              </section>
+            ) : (
+              <EmptyState
+                icon={<HeartIcon />}
+                title="No saved ads yet"
+                message="Tap the heart on any listing to keep it here for later."
+                actionLabel="Browse vehicles"
+                onAction={() => go("results")}
+              />
+            )}
+          </main>
+        )}
+
         {view === "sell" && (
           <SellFlow
             draft={draft}
@@ -764,6 +984,14 @@ export default function Prototype() {
                 Enquiries
               </button>
             </div>
+
+            <button type="button" className="saved-entry" onClick={() => go("saved")}>
+              <span>
+                <HeartFilledIcon />
+                Saved Ads
+              </span>
+              <b>{savedListings.length}</b>
+            </button>
 
             <SectionHeader title="My ads" action="View storefront" onAction={() => openStore(myStoreId)} />
             {myAds.length ? (
@@ -892,9 +1120,9 @@ export default function Prototype() {
           <PlusIcon />
           <span>Sell</span>
         </button>
-        <button onClick={() => setToast("Shortlist syncs with your account soon.")}>
-          <HeartIcon />
-          <span>Shortlist</span>
+        <button className={view === "saved" ? "active" : ""} onClick={() => go("saved")}>
+          {savedIds.length ? <HeartFilledIcon /> : <HeartIcon />}
+          <span>Saved{savedIds.length ? ` (${savedIds.length})` : ""}</span>
         </button>
         <button
           className={view === "seller" ? "active" : ""}

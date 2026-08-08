@@ -19,9 +19,31 @@ export function Rail({
   ariaLabel,
   className = "",
   contentClassName = "",
-}: PropsWithChildren<{ ariaLabel: string; className?: string; contentClassName?: string }>) {
+  onEndReached,
+}: PropsWithChildren<{
+  ariaLabel: string;
+  className?: string;
+  contentClassName?: string;
+  onEndReached?: () => void;
+}>) {
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  // Endless horizontal scroll: request the next page as the rail nears its end.
+  const onScroll = () => {
+    if (!onEndReached) return;
+    const el = ref.current;
+    if (!el) return;
+    if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 120) onEndReached();
+  };
+
   return (
-    <div className={`rail ${className}`.trim()} role="group" aria-label={ariaLabel}>
+    <div
+      ref={ref}
+      className={`rail ${className}`.trim()}
+      role="group"
+      aria-label={ariaLabel}
+      onScroll={onScroll}
+    >
       <div className={`rail-track ${contentClassName}`.trim()}>{children}</div>
     </div>
   );

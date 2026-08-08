@@ -1,0 +1,362 @@
+/* Brand vectors, dealers directory, saved ads, and engagement badges. */
+
+/* Brand grid with SVG vectors ---------------------------------------------- */
+.brand-grid button {
+  display: flex;
+  min-height: 74px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  border: 1px solid var(--m-line);
+  border-radius: 14px;
+  background: var(--m-card);
+  transition: transform 0.16s ease, border-color 0.16s ease;
+}
+
+.brand-grid button:hover {
+  transform: translateY(-2px);
+  border-color: var(--m-accent);
+}
+
+.brand-grid button > div {
+  color: var(--m-accent);
+}
+
+.brand-grid button > div svg {
+  width: 30px;
+  height: 30px;
+}
+
+.brand-grid strong {
+  color: var(--m-ink);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+/* Header dealers entry ------------------------------------------------------ */
+.dealers-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 34px;
+  flex: none;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--m-line);
+  border-radius: 999px;
+  background: var(--m-card);
+  color: var(--m-ink);
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.dealers-nav:hover {
+  border-color: var(--m-accent);
+  background: var(--m-accent-soft);
+  color: var(--m-accent);
+}
+
+.dealers-nav svg {
+  width: 14px;
+  height: 14px;
+  color: var(--m-accent);
+}
+
+@media (max-width: 430px) {
+  .dealers-nav span {
+    display: none;
+  }
+
+  .dealers-nav {
+    padding: 0 var(--space-2);
+  }
+}
+
+/* Listing card: save control + popular flag --------------------------------- */
+.listing-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border: 1px solid var(--m-line);
+  border-radius: 15px;
+  background: var(--m-card);
+}
+
+.listing-open {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  background: none;
+  text-align: left;
+}
+
+.listing-save {
+  position: absolute;
+  z-index: 2;
+  top: var(--space-2);
+  right: var(--space-2);
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: #4b4740;
+  box-shadow: 0 2px 8px rgba(24, 18, 8, 0.18);
+}
+
+.dark .listing-save {
+  background: rgba(28, 26, 22, 0.92);
+  color: #e8e0d2;
+}
+
+.listing-save svg {
+  width: 14px;
+  height: 14px;
+}
+
+.listing-save.is-saved {
+  color: #d64545;
+}
+
+.icon-button.is-saved {
+  color: #d64545;
+}
+
+.popular-badge {
+  position: absolute;
+  z-index: 2;
+  bottom: var(--space-2);
+  left: var(--space-2);
+  padding: 2px var(--space-2);
+  border-radius: 999px;
+  background: #fff2e6;
+  color: #b3521f;
+  font-size: 8px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.dark .popular-badge {
+  background: #3a2b12;
+  color: #f0bd6d;
+}
+
+/* Urgency messaging --------------------------------------------------------- */
+.urgency-badge {
+  display: inline-block;
+  margin-top: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: 999px;
+  background: #fff2e6;
+  color: #b3521f;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.dark .urgency-badge {
+  background: #3a2b12;
+  color: #f0bd6d;
+}
+
+.urgency-banner {
+  margin: var(--space-3) 0 0;
+  padding: var(--space-3);
+  border: 1px solid #f0c9a4;
+  border-radius: 11px;
+  background: #fff4ea;
+  color: #a8501f;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.dark .urgency-banner {
+  border-color: #4a3717;
+  background: #2c2110;
+  color: #f0bd6d;
+}
+
+.engagement-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.engagement-row span {
+  display: grid;
+  gap: 2px;
+  padding: var(--space-2);
+  border: 1px solid var(--m-line);
+  border-radius: 10px;
+  background: var(--m-card);
+  text-align: center;
+}
+
+.engagement-row b {
+  color: var(--m-accent);
+  font-size: 15px;
+}
+
+.engagement-row small {
+  color: var(--m-muted);
+  font-size: 9px;
+}
+
+/* Dealers directory --------------------------------------------------------- */
+.dealer-list {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.dealer-card {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--m-line);
+  border-radius: 16px;
+  background: var(--m-card);
+}
+
+.dealer-card-main {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--space-3);
+  background: none;
+  text-align: left;
+}
+
+.dealer-card-main .dealer-avatar {
+  position: static;
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 0;
+  border-radius: 14px;
+  background: var(--m-accent-soft);
+  color: var(--m-accent);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.dealer-card-body {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.dealer-card-body b {
+  font-size: 13px;
+}
+
+.verified-dot {
+  color: var(--m-good);
+  font-style: normal;
+}
+
+.dealer-card-body small {
+  color: var(--m-muted);
+  font-size: 10px;
+}
+
+.dealer-card-stats {
+  color: var(--m-accent) !important;
+  font-weight: 700;
+}
+
+.dealer-card-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-2);
+}
+
+.dealer-card-actions button {
+  min-height: 38px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--m-line);
+  border-radius: 10px;
+  background: var(--m-bg);
+  color: var(--m-ink);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.dealer-card-actions button:first-child {
+  border-color: var(--m-accent);
+  background: var(--m-accent);
+  color: #fff;
+}
+
+.dealer-card-actions svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Saved ads ----------------------------------------------------------------- */
+.saved-page .results-list {
+  margin-top: var(--space-4);
+}
+
+.saved-stats {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--m-accent);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.saved-entry {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--m-line);
+  border-radius: 12px;
+  background: var(--m-card);
+  color: var(--m-ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.saved-entry span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.saved-entry svg {
+  color: #d64545;
+}
+
+.saved-entry b {
+  color: var(--m-accent);
+  font-size: 15px;
+}
+
+@media (min-width: 740px) {
+  .dealer-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .brand-grid button {
+    min-height: 88px;
+  }
+
+  .brand-grid button > div svg {
+    width: 34px;
+    height: 34px;
+  }
+}
