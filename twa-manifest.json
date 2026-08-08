@@ -1,0 +1,59 @@
+{
+  "packageId": "in.motora.app",
+  "host": "motora-five.vercel.app",
+  "name": "Motora — Vehicles & Transport Marketplace",
+  "launcherName": "Motora",
+  "display": "standalone",
+  "orientation": "portrait",
+  "themeColor": "#D7552A",
+  "themeColorDark": "#11110F",
+  "navigationColor": "#D7552A",
+  "navigationColorDark": "#11110F",
+  "navigationDividerColor": "#E9E5DF",
+  "navigationDividerColorDark": "#39372F",
+  "backgroundColor": "#FBFAF7",
+  "enableNotifications": false,
+  "startUrl": "/",
+  "iconUrl": "https://motora-five.vercel.app/icons/icon-512.png",
+  "maskableIconUrl": "https://motora-five.vercel.app/icons/maskable-icon-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "motora"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [
+    {
+      "name": "Sell a vehicle",
+      "shortName": "Sell",
+      "url": "/?screen=sell",
+      "chosenIconUrl": "https://motora-five.vercel.app/icons/icon-192.png"
+    },
+    {
+      "name": "Search stock",
+      "shortName": "Search",
+      "url": "/?screen=results",
+      "chosenIconUrl": "https://motora-five.vercel.app/icons/icon-192.png"
+    }
+  ],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://motora-five.vercel.app/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://motora-five.vercel.app/",
+  "minSdkVersion": 23,
+  "orientationLock": false,
+  "appVersion": "1.0.0",
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "protocolHandlers": [],
+  "fileHandlers": [],
+  "launchHandlerClientMode": "auto"
+}

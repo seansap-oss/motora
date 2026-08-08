@@ -1,4 +1,10 @@
 import type { AuthUser, PackageId, SellerType } from "./types";
+import {
+  CREDENTIAL_CHANGES_ENABLED,
+  TEST_ACCOUNTS_ONLY,
+  authenticateTestUser,
+  type TestUser,
+} from "./testUsers";
 
 const STORAGE_KEY = "motora.session.v1";
 
@@ -97,3 +103,42 @@ export function verifyOtp(code: string) {
 }
 
 export const DEMO_OTP = "123456";
+
+/** Maps a locked closed-testing account onto the app's session user shape. */
+export function userFromTestAccount(account: TestUser): AuthUser {
+  return {
+    id: account.id,
+    name: account.name,
+    phone: account.phone,
+    email: account.email,
+    initials: initials(account.name),
+    sellerType: account.sellerType,
+    sellerId: account.id,
+    packageId: account.packageId,
+    isAdmin: account.isAdmin,
+    adsUsedThisPeriod: 0,
+  };
+}
+
+/**
+ * Closed-testing sign-in. While TEST_ACCOUNTS_ONLY is set, this is the only
+ * path that can mint a session.
+ */
+export function signInWithTestAccount(email: string, pin: string) {
+  const result = authenticateTestUser(email, pin);
+  if (!result.ok) return result;
+  const user = userFromTestAccount(result.user);
+  return { ok: true as const, user, token: mintToken(user) };
+}
+
+export const TEST_MODE = TEST_ACCOUNTS_ONLY;
+
+/** Credential changes are intentionally unavailable on the closed track. */
+export function changeCredentials(): { ok: false; error: string } {
+  return {
+    ok: false,
+    error: CREDENTIAL_CHANGES_ENABLED
+      ? "Credential updates are handled by the account service."
+      : "PIN changes are disabled during Google Play closed testing.",
+  };
+}

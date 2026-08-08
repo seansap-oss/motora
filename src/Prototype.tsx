@@ -42,6 +42,9 @@ import { loadSession, saveSession, type Session } from "./data/auth";
 import { getPackage } from "./data/packages";
 import { BrandIcon } from "./components/BrandIcons";
 import HeroCarousel, { HERO_SLOTS } from "./components/HeroCarousel";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import AccountDeletion from "./pages/AccountDeletion";
 import {
   isPopular,
   loadCounts,
@@ -68,16 +71,45 @@ import SellFlow from "./components/sell/SellFlow";
 import { createDraft, draftTitle, formatPrice } from "./components/sell/draft";
 import suvImage from "./assets/motora-suv.png";
 
-type View = "home" | "results" | "detail" | "dealer" | "dealers" | "sell" | "seller" | "admin" | "packages" | "saved";
+type View =
+  | "home"
+  | "results"
+  | "detail"
+  | "dealer"
+  | "dealers"
+  | "sell"
+  | "seller"
+  | "admin"
+  | "packages"
+  | "saved"
+  | "privacy"
+  | "terms"
+  | "deletion";
 
-/** Reads /store/:dealerId so dealer micro-sites are shareable, deep-linkable URLs. */
+/** Google Play requires these to be reachable at stable, linkable URLs. */
+const LEGAL_ROUTES: Record<string, View> = {
+  "privacy-policy": "privacy",
+  terms: "terms",
+  "account-deletion": "deletion",
+};
+
+/** Reads /store/:dealerId and the legal routes as shareable, deep-linkable URLs. */
 function readRoute(): { view: View; sellerId?: string } {
   const path = window.location.pathname.replace(/\/+$/, "");
   const match = path.match(/\/store\/([a-z0-9-]+)$/i);
   if (match) return { view: "dealer", sellerId: match[1] };
+
+  const legal = path.split("/").pop() ?? "";
+  if (legal && LEGAL_ROUTES[legal]) return { view: LEGAL_ROUTES[legal] };
+
   const screen = new URLSearchParams(window.location.search).get("screen");
   if (screen === "sell" || screen === "results" || screen === "packages") return { view: screen as View };
   return { view: "home" };
+}
+
+function legalPath(slug: string) {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  return `${base}/${slug}`;
 }
 
 function storePath(sellerId: string) {
@@ -114,7 +146,8 @@ export default function Prototype() {
   const [shareTarget, setShareTarget] = useState<ShareTarget | null>(null);
   const [shareOpen, setShareOpen] = useState(false);
   const [valuationOpen, setValuationOpen] = useState(false);
-  const [planId, setPlanId] = useState<PackageId>("free");
+  // Restored sessions keep their assigned tier rather than resetting to free.
+  const [planId, setPlanId] = useState<PackageId>(() => session?.user.packageId ?? "free");
   const [savedIds, setSavedIds] = useState<string[]>(() => loadSaved());
   const [counts, setCounts] = useState<EngagementCounts>(() => seedCounts(listings, loadCounts()));
   const [feedSize, setFeedSize] = useState(6);
@@ -128,6 +161,12 @@ export default function Prototype() {
     window.history.pushState({ motoraView: next }, "");
   };
   const back = () => setView("home");
+
+  /** Pushes a real URL for the Play-mandated legal pages. */
+  const goLegal = (slug: string, next: View) => {
+    setView(next);
+    window.history.pushState({ motoraView: next }, "", legalPath(slug));
+  };
 
   useEffect(() => {
     const onPopState = () => {
@@ -159,6 +198,8 @@ export default function Prototype() {
     const next = { user: nextUser, token, issuedAt: Date.now() };
     setSession(next);
     saveSession(next);
+    // Adopt the package tier assigned to the account (dealers/admin are pre-provisioned).
+    setPlanId(nextUser.packageId);
     setToast(`Signed in as ${nextUser.name}`);
     // Resume whatever the gate interrupted.
     const resume = pendingAction;
@@ -463,6 +504,21 @@ export default function Prototype() {
                 Start a listing
               </button>
             </section>
+
+            <footer className="app-footer">
+              <nav aria-label="Legal">
+                <button type="button" onClick={() => goLegal("privacy-policy", "privacy")}>
+                  Privacy Policy
+                </button>
+                <button type="button" onClick={() => goLegal("terms", "terms")}>
+                  Terms of Service
+                </button>
+                <button type="button" onClick={() => goLegal("account-deletion", "deletion")}>
+                  Delete account
+                </button>
+              </nav>
+              <small>© {new Date().getFullYear()} Motora · Imphal, Manipur, India</small>
+            </footer>
           </main>
         )}
 
@@ -1101,6 +1157,9 @@ export default function Prototype() {
             <AdminPanel onToast={setToast} />
           </main>
         )}
+        {view === "privacy" && <PrivacyPolicy onBack={back} />}
+        {view === "terms" && <TermsOfService onBack={back} />}
+        {view === "deletion" && <AccountDeletion onBack={back} />}
       </AppScroll>
 
       <nav className="motora-bottom-nav" aria-label="Main navigation">

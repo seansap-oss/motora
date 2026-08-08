@@ -8,3 +8,13 @@ motora-stage1/
 
 # Local dev logs
 .dev-server*.log
+
+# Android signing material — never commit. Losing these blocks app updates,
+# leaking them lets anyone publish as Motora.
+*.keystore
+*.jks
+android.keystore
+keystore.properties
+android/
+app-release*.apk
+app-release*.aab

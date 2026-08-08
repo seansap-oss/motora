@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Sheet, TextInput } from "./shell";
-import { DEMO_ADMIN_PHONE, DEMO_OTP, createUser, isValidPhone, mintToken, normalisePhone, verifyOtp } from "../data/auth";
-import type { AuthUser, SellerType } from "../data/types";
+import { changeCredentials, signInWithTestAccount } from "../data/auth";
+import { TEST_USER_COUNT } from "../data/testUsers";
+import type { AuthUser } from "../data/types";
 
 type Props = {
   open: boolean;
@@ -11,160 +12,107 @@ type Props = {
 };
 
 export default function AuthSheet({ open, onOpenChange, onAuthenticated, reason }: Props) {
-  const [step, setStep] = useState<"phone" | "otp" | "profile">("phone");
-  const [phone, setPhone] = useState("");
-  const [otp, setOtp] = useState("");
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [sellerType, setSellerType] = useState<SellerType>("Private seller");
+  const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
     if (!open) {
-      setStep("phone");
-      setOtp("");
+      setPin("");
       setError("");
       setBusy(false);
     }
   }, [open]);
 
-  const sendOtp = () => {
-    if (!isValidPhone(phone)) {
-      setError("Enter a valid 10-digit Indian mobile number.");
-      return;
-    }
+  const submit = () => {
     setError("");
     setBusy(true);
+
     window.setTimeout(() => {
+      const result = signInWithTestAccount(email, pin);
       setBusy(false);
-      setStep("otp");
-    }, 600);
-  };
 
-  const checkOtp = () => {
-    const result = verifyOtp(otp);
-    if (!result.ok) {
-      setError(result.error);
-      return;
-    }
-    setError("");
-    setStep("profile");
-  };
+      if (!result.ok) {
+        setError(result.error);
+        setPin("");
+        return;
+      }
 
-  const finish = () => {
-    if (!name.trim()) {
-      setError("Enter your name so buyers know who they are contacting.");
-      return;
-    }
-    const user = createUser({ name, phone, email, sellerType });
-    onAuthenticated(user, mintToken(user));
-    onOpenChange(false);
+      onAuthenticated(result.user, result.token);
+      onOpenChange(false);
+    }, 420);
   };
 
   return (
     <Sheet
       open={open}
       onOpenChange={onOpenChange}
-      title={step === "profile" ? "Complete your profile" : "Sign in to Motora"}
-      description={reason ?? "Verify your mobile number to manage listings and enquiries."}
+      title="Sign in to Motora"
+      description={reason ?? "Closed testing build — sign in with your assigned test account."}
     >
-      <div className="auth-body">
-        {step === "phone" && (
-          <>
-            <label className="form-label">
-              Mobile number
-              <div className="phone-input">
-                <span>+91</span>
-                <TextInput
-                  inputMode="numeric"
-                  autoComplete="tel"
-                  value={phone}
-                  onChange={(event) => setPhone(normalisePhone(event.target.value))}
-                  placeholder="98765 43210"
-                />
-              </div>
-            </label>
-            <p className="form-copy">
-              We send a one-time code. Standard SMS rates apply. Demo: use <b>{DEMO_ADMIN_PHONE}</b> to sign in as the
-              Motora owner.
-            </p>
-            <button type="button" className="primary full" onClick={sendOtp} disabled={busy}>
-              {busy ? "Sending code…" : "Send OTP"}
-            </button>
-          </>
-        )}
+      <form
+        className="auth-body"
+        onSubmit={(event) => {
+          event.preventDefault();
+          submit();
+        }}
+      >
+        <div className="test-mode-note">
+          <b>Closed testing</b>
+          <p>
+            This build accepts the {TEST_USER_COUNT} accounts issued for Google Play closed testing. Use the address and
+            4-digit PIN from your tester invitation.
+          </p>
+        </div>
 
-        {step === "otp" && (
-          <>
-            <p className="form-copy">
-              Code sent to <b>+91 {phone}</b>. For this demo use <b>{DEMO_OTP}</b>.
-            </p>
-            <label className="form-label">
-              6-digit code
-              <TextInput
-                inputMode="numeric"
-                autoComplete="one-time-code"
-                value={otp}
-                onChange={(event) => setOtp(event.target.value.replace(/[^0-9]/g, "").slice(0, 6))}
-                placeholder="123456"
-              />
-            </label>
-            <div className="step-actions">
-              <button type="button" onClick={() => setStep("phone")}>
-                Change number
-              </button>
-              <button type="button" className="primary" onClick={checkOtp}>
-                Verify
-              </button>
-            </div>
-          </>
-        )}
+        <label className="form-label">
+          Test account email
+          <TextInput
+            type="email"
+            autoComplete="username"
+            inputMode="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="test01@motora.in"
+          />
+        </label>
 
-        {step === "profile" && (
-          <>
-            <label className="form-label">
-              Your name
-              <TextInput value={name} onChange={(event) => setName(event.target.value)} placeholder="e.g. Amit Sharma" />
-            </label>
-            <label className="form-label">
-              Email (optional)
-              <TextInput
-                type="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                placeholder="you@email.com"
-              />
-            </label>
-            <label className="form-label">I am a</label>
-            <div className="choice-grid three">
-              {(["Dealer", "Private seller", "Collector"] as SellerType[]).map((item) => (
-                <button
-                  type="button"
-                  key={item}
-                  className={sellerType === item ? "selected" : ""}
-                  onClick={() => setSellerType(item)}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-            <button type="button" className="primary full" onClick={finish}>
-              Continue
-            </button>
-          </>
-        )}
+        <label className="form-label">
+          4-digit PIN
+          <TextInput
+            type="password"
+            autoComplete="current-password"
+            inputMode="numeric"
+            value={pin}
+            onChange={(event) => setPin(event.target.value.replace(/[^0-9]/g, "").slice(0, 4))}
+            placeholder="••••"
+          />
+        </label>
+
+        <button type="submit" className="primary full" disabled={busy}>
+          {busy ? "Verifying…" : "Sign in"}
+        </button>
 
         {error && (
           <p className="auth-error" role="alert">
             {error}
           </p>
         )}
+
+        <button
+          type="button"
+          className="auth-link"
+          onClick={() => setError(changeCredentials().error)}
+        >
+          Forgot or change PIN?
+        </button>
+
         <p className="auth-legal">
-          By continuing you agree to Motora's terms and privacy policy. Your number is never shown publicly unless you
-          allow it.
+          By continuing you agree to Motora's Terms of Service and Privacy Policy. Your contact details are never shown
+          publicly unless you allow it. You can request account and data deletion at any time.
         </p>
-      </div>
+      </form>
     </Sheet>
   );
 }
