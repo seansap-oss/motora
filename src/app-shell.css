@@ -15,7 +15,8 @@
   --safe-left: env(safe-area-inset-left, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
   --mobile-safe-area-height: 0px;
-  --content-max: 1180px;
+  --content-max: 1200px;
+  --rail-width: 220px;
   --ring: 0 0 0 3px color-mix(in srgb, var(--m-accent) 32%, transparent);
 }
 
@@ -573,19 +574,43 @@ button {
 }
 
 /* Bottom navigation ------------------------------------------------------- */
+/* Mobile: pinned bottom tab bar. */
 .motora-bottom-nav {
-  position: absolute;
-  z-index: 30;
+  position: fixed;
+  z-index: 1000;
   right: 0;
   bottom: 0;
   left: 0;
   display: grid;
+  width: 100%;
   grid-template-columns: repeat(5, 1fr);
   min-height: calc(var(--nav-height) + var(--safe-bottom));
   padding: var(--space-1) var(--space-1) var(--safe-bottom);
   border-top: 1px solid var(--m-line);
   background: color-mix(in srgb, var(--m-card) 94%, transparent);
   backdrop-filter: blur(12px);
+}
+
+.motora-bottom-nav button {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  color: var(--m-muted);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.motora-bottom-nav svg {
+  width: 20px;
+  height: 20px;
+}
+
+.motora-bottom-nav .active {
+  color: var(--m-accent);
+  font-weight: 900;
 }
 
 .motora-toast {
@@ -612,33 +637,66 @@ button {
 /* Fluid tablet / desktop -------------------------------------------------- */
 @media (min-width: 740px) {
   .motora-page {
-    width: min(var(--content-max), calc(100% - 128px));
+    width: 100%;
+    max-width: var(--content-max);
     margin: 0 auto;
-    padding: var(--space-6) 0 calc(var(--space-7) + var(--space-5));
+    padding: var(--space-6) var(--space-6) calc(var(--space-7) + var(--space-5));
   }
 
+  /* Desktop: structured fixed left navigation rail. */
   .motora-bottom-nav {
+    position: fixed;
     top: 0;
     right: auto;
     bottom: 0;
     left: 0;
-    width: 92px;
+    z-index: 100;
+    width: var(--rail-width);
     min-height: 100%;
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(5, 72px);
+    grid-template-rows: repeat(5, 52px);
     align-content: start;
-    padding: 88px var(--space-1) var(--space-5);
+    gap: var(--space-1);
+    padding: 96px var(--space-3) var(--space-5);
     border-top: 0;
     border-right: 1px solid var(--m-line);
     background: var(--m-card);
+    backdrop-filter: none;
+  }
+
+  .motora-bottom-nav button {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: var(--space-3);
+    padding: 0 var(--space-3);
+    border-radius: 11px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: left;
+  }
+
+  .motora-bottom-nav button:hover {
+    background: var(--m-bg);
+    color: var(--m-ink);
+  }
+
+  .motora-bottom-nav button.active {
+    background: var(--m-accent-soft);
+    color: var(--m-accent);
+  }
+
+  .motora-bottom-nav svg {
+    width: 18px;
+    height: 18px;
+    flex: none;
   }
 
   .app-scroll {
-    padding-left: 92px;
+    padding-left: var(--rail-width);
   }
 
   .motora-toast {
-    left: calc(92px + var(--space-4));
+    left: calc(var(--rail-width) + var(--space-4));
     bottom: var(--space-5);
   }
 
