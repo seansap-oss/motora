@@ -1,0 +1,131 @@
+========================================================================
+MOTORA - TERMS OF SERVICE
+========================================================================
+
+Public URL: https://motora-five.vercel.app/terms
+Mirror:     https://seansap-oss.github.io/motora/terms
+
+Paste the public URL into Google Play Console. The text below is the
+same content, provided for offline review.
+
+========================================================================
+These Terms govern your use of the Motora app and motora.in. By creating an account or using Motora you agree to them. If you do not agree, do not use the service.
+
+
+1. WHAT MOTORA IS
+-----------------
+
+Motora is a listing platform. We connect buyers with private sellers, dealers and collectors. Motora is not a party to any sale, is not an agent, broker, dealer, financier or insurer, and does not take custody of any vehicle or payment between a buyer and a seller. Every transaction is solely between the buyer and the seller.
+
+
+2. ELIGIBILITY
+--------------
+
+You must be at least 18 years old and legally able to enter contracts in India. Dealers must hold any trade registrations their state requires. During closed testing, access is restricted to accounts issued by Motora.
+
+
+3. ACCOUNTS
+-----------
+
+  * Keep your credentials confidential; you are responsible for activity under your account.
+  * Provide accurate contact details so buyers can reach you.
+  * One person or business per account. Do not share, sell or transfer accounts.
+  * We may suspend or terminate accounts that breach these Terms.
+
+
+4. LISTING GUIDELINES
+---------------------
+
+Every listing must satisfy all of the following:
+
+  * Ownership: you own the vehicle or are authorised to sell it. Listing stolen, financed-without-consent, or otherwise encumbered vehicles is prohibited.
+  * Accuracy: make, model, variant, year, odometer, ownership count, registration and price must be truthful. Odometer tampering and mileage misstatement are prohibited.
+  * Disclosure: you must disclose accident history, flood or fire damage, major engine or structural repair, salvage or rebuilt status, and any outstanding loan, lien or challan.
+  * Media rights: upload only photos and video you captured or are licensed to use. Do not reuse images from other marketplaces or manufacturers without permission. AI-generated imagery must be labelled and must never depict an invented exact vehicle.
+  * One vehicle per listing; no duplicate listings for the same vehicle.
+  * Prohibited: unrelated goods or services, adult content, weapons, counterfeit parts, fake documents, spam, malware links, and discriminatory or harassing content.
+
+We may edit, unpublish or remove any listing that breaches these rules, and may report unlawful activity to the authorities.
+
+
+5. MOTORA CHECKED — VERIFICATION DISCLAIMER
+-------------------------------------------
+
+Motora Checked is an optional, paid, mechanic-led inspection. Read this carefully:
+
+  * An inspection reflects the vehicle's observable condition on the inspection date only.
+  * It is not a warranty, guarantee, insurance policy, roadworthiness certificate, or title guarantee.
+  * Inspections are visual and diagnostic. They may not detect latent, intermittent or concealed defects.
+  * A badge does not verify legal title, loan status or the seller's identity beyond stated checks.
+  * Badges expire and may be revoked if a report is found to be inaccurate.
+
+Always inspect a vehicle in person, verify RC, insurance and challan records independently, and consider an independent mechanic before paying. Verified and dealer badges indicate document checks we performed; they are not an endorsement or a guarantee of any transaction.
+
+
+6. BUYER RESPONSIBILITIES
+-------------------------
+
+  * Independently verify the vehicle, its documents and the seller before paying.
+  * Never pay a deposit or full amount to anyone who refuses an in-person meeting, pressures you to transact urgently, or asks for payment through unverified channels.
+  * Motora will never ask you to transfer money to a Motora employee's personal account.
+
+
+7. PACKAGES, PAYMENTS AND REFUNDS
+---------------------------------
+
+  * Free, Standard, Comprehensive and Dealer packages differ in ad allowance, photo limits and placement.
+  * Prices are shown exclusive of GST; 18% GST is added and displayed at checkout.
+  * Payments are processed by a licensed Indian gateway. Motora does not store card or UPI credentials.
+  * Paid placements are digital services delivered on activation and are non-refundable once a listing is live, except where required by law or where we fail to deliver the purchased placement.
+  * We may change pricing prospectively with notice; active purchased periods are honoured.
+
+
+8. CONTENT LICENCE
+------------------
+
+You retain ownership of your content. You grant Motora a non-exclusive, worldwide, royalty-free licence to host, store, resize, and display your listing content for the purpose of operating and promoting the marketplace. This licence ends when you delete the content, except for copies retained in backups or required by law.
+
+
+9. PROHIBITED CONDUCT
+---------------------
+
+  * Scraping, bulk-harvesting contact details, or automated access without written permission.
+  * Circumventing fees, ad limits, or verification.
+  * Impersonation, misrepresenting dealer status, or fake reviews.
+  * Interfering with the service, its security, or other users.
+
+
+10. DISCLAIMERS
+---------------
+
+The service is provided "as is" and "as available". To the maximum extent permitted by law, Motora disclaims all implied warranties, including merchantability, fitness for a particular purpose, and non-infringement. We do not warrant that listings are accurate, that sellers or buyers are trustworthy, or that the service will be uninterrupted or error-free.
+
+
+11. LIMITATION OF LIABILITY
+---------------------------
+
+To the maximum extent permitted by law, Motora is not liable for indirect, incidental, special, consequential or punitive damages, or for loss of profits, data or goodwill. Our total aggregate liability for any claim is limited to the greater of the amount you paid Motora in the twelve months before the claim, or ₹1,000. Nothing limits liability that cannot be limited under Indian law.
+
+
+12. INDEMNITY
+-------------
+
+You agree to indemnify Motora against claims arising from your listings, your content, your transactions, or your breach of these Terms.
+
+
+13. TERMINATION
+---------------
+
+You may stop using Motora and delete your account at any time. We may suspend or terminate access for breach, suspected fraud, or legal requirement. Sections that by their nature survive termination will survive.
+
+
+14. GOVERNING LAW
+-----------------
+
+These Terms are governed by the laws of India. Courts at Imphal, Manipur have exclusive jurisdiction, subject to any non-waivable consumer rights available to you where you reside.
+
+
+15. CONTACT
+-----------
+
+Motora Support — support@motora.in Grievance Officer — grievance@motora.in

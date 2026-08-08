@@ -1,0 +1,115 @@
+========================================================================
+MOTORA - GOOGLE PLAY CLOSED TESTING ACCOUNTS
+========================================================================
+
+App:        Motora - Vehicle Marketplace
+Package:    in.motora.app
+Build:      Closed testing (20 hardcoded accounts)
+Sign-in:    Email address + 4-digit PIN. There is NO OTP or SMS step.
+
+------------------------------------------------------------------------
+>>> SUPER ADMIN - USE THIS FOR THE PLAY CONSOLE REVIEWER <<<
+------------------------------------------------------------------------
+
+    EMAIL:  test20@motora.in
+    PIN:    5962
+    ROLE:   Super Admin
+
+    This account unlocks EVERY screen in the app, including the Owner
+    Super-Admin panel (dealer approvals, catalogue injection, category
+    duplication and the listing moderation queue).
+
+    Paste these credentials into:
+      Play Console > App content > App access > "All functionality is
+      restricted" > Add new instructions.
+
+------------------------------------------------------------------------
+ALL 20 ACCOUNTS
+------------------------------------------------------------------------
+
+  #   EMAIL                    PIN     ROLE              PACKAGE TIER
+  --- ------------------------ ------- ----------------- --------------
+  01  test01@motora.in         4192    Private Seller    Free
+  02  test02@motora.in         8301    Private Seller    Free
+  03  test03@motora.in         1547    Private Seller    Free
+  04  test04@motora.in         6923    Private Seller    Free
+  05  test05@motora.in         3084    Private Seller    Free
+  06  test06@motora.in         9215    Verified Dealer   Comprehensive
+  07  test07@motora.in         5739    Verified Dealer   Comprehensive
+  08  test08@motora.in         2840    Verified Dealer   Comprehensive
+  09  test09@motora.in         7461    Verified Dealer   Comprehensive
+  10  test10@motora.in         1092    Verified Dealer   Comprehensive
+  11  test11@motora.in         8534    Buyer/Tester      Free
+  12  test12@motora.in         4620    Buyer/Tester      Free
+  13  test13@motora.in         3198    Buyer/Tester      Free
+  14  test14@motora.in         7256    Buyer/Tester      Free
+  15  test15@motora.in         9043    Buyer/Tester      Free
+  16  test16@motora.in         6187    Buyer/Tester      Free
+  17  test17@motora.in         2509    Buyer/Tester      Free
+  18  test18@motora.in         8431    Buyer/Tester      Free
+  19  test19@motora.in         3715    Buyer/Tester      Free
+  20  test20@motora.in         5962    Super Admin       Dealer
+
+------------------------------------------------------------------------
+WHAT EACH ROLE CAN SEE
+------------------------------------------------------------------------
+
+  Private Seller (01-05)
+    - Guided 6-step listing flow
+    - Seller dashboard, My Ads, lead analytics
+    - Free tier limits: 1 ad per month, 3 photos
+    - Can purchase a package upgrade through the UPI checkout
+
+  Verified Dealer (06-10)
+    - Everything a private seller can do
+    - Pre-provisioned on the Comprehensive tier (10 ads, 8 photos)
+    - Dealer storefront / micro-site at /store/:dealerId
+    - Verification badge shown on listings
+
+  Buyer/Tester (11-19)
+    - Search, filter and browse the full catalogue
+    - Save ads to the Saved Ads screen
+    - EMI calculator, on-road price breakdown, instant valuation
+    - Contact sellers, share listings
+
+  Super Admin (20)
+    - Everything above
+    - Owner Super-Admin panel: dealer approvals, catalogue model
+      injection, category duplication, listing moderation queue
+
+------------------------------------------------------------------------
+HOW TO SIGN IN
+------------------------------------------------------------------------
+
+  1. Open the app (or https://motora-five.vercel.app).
+  2. Tap "Sell" or "Profile" in the bottom navigation.
+     Browsing and search work WITHOUT signing in - the gate only appears
+     on seller and account screens.
+  3. Enter the email address exactly as listed above.
+  4. Enter the 4-digit PIN.
+  5. Tap "Sign in".
+
+------------------------------------------------------------------------
+IMPORTANT NOTES
+------------------------------------------------------------------------
+
+  * Only these 20 accounts can authenticate. Any other email address is
+    rejected, and a wrong PIN is rejected with the same message so the
+    tester list cannot be enumerated.
+
+  * PIN changes are intentionally DISABLED on this build. Tapping
+    "Forgot or change PIN?" returns an explanatory message.
+
+  * These are demonstration credentials for closed testing only. They
+    are compiled into the client bundle and must be replaced by a real
+    backend before any production or open-track release. Set the
+    environment variable VITE_DISABLE_TEST_ACCOUNTS=true to turn the
+    hardcoded path off.
+
+  * Google Play requires 12 testers opted in for 14 continuous days
+    before you can apply for production access. Invite all 20 addresses
+    in Play Console > Testing > Closed testing > Testers.
+
+========================================================================
+Generated for the Motora Google Play submission.
+========================================================================

@@ -1,0 +1,47 @@
+========================================================================
+MOTORA - ACCOUNT & DATA DELETION
+========================================================================
+
+Public URL: https://motora-five.vercel.app/account-deletion
+Mirror:     https://seansap-oss.github.io/motora/account-deletion
+
+Paste the public URL into Google Play Console. The text below is the
+same content, provided for offline review.
+
+========================================================================
+You can ask us to delete your Motora account and associated data at any time. Submit the form below, or email privacy@motora.in from your registered address with the subject "Account deletion".
+
+
+WHAT GETS DELETED
+-----------------
+
+  * Profile: name, email address, mobile number and seller type.
+  * All listings, including specifications, pricing and disclosures.
+  * Uploaded media: photographs, videos and voice notes.
+  * Saved ads, saved searches and notification preferences.
+  * Storefront page and its public share link.
+
+
+WHAT WE RETAIN, AND WHY
+-----------------------
+
+  * Transaction and tax records for package purchases — retained up to 8 years because Indian tax law requires it.
+  * Fraud and safety records where an account was suspended for abuse — retained to prevent recurrence.
+  * Aggregated, de-identified analytics that can no longer be linked to you.
+
+
+TIMELINE
+--------
+
+  * Acknowledgement within 48 hours.
+  * Listings removed from public search immediately on verification.
+  * Full erasure completed within 30 days.
+  * Backup copies purged on the normal backup rotation, within 90 days.
+
+Submit a request Registered email address What should we delete? Delete my entire account Profile, credentials, saved ads and all listings. Delete my listings only Remove every advertisement but keep the account. Delete uploaded media only Photos, videos and voice notes attached to listings. Reason (optional) I understand this is permanent Deleted listings, media and saved ads cannot be recovered. Submit deletion request
+
+
+CONTACT
+-------
+
+Motora Privacy Team — privacy@motora.in Developer: Motora, Imphal, Manipur, India.
